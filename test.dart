@@ -1,8 +1,9 @@
 import 'dart:math';
 import 'package:grpc/grpc.dart';
+import 'Model/Log.dart';
+import 'Model/LogLayer.dart';
+import 'Model/LogType.dart';
 import 'Sdk/ReportLogService.pbgrpc.dart';
-import 'package:fixnum/fixnum.dart';
-import 'package:uuid/uuid.dart';
 //定义grpc通道
 final channel = ClientChannel(
   'localhost',
@@ -14,22 +15,22 @@ final channel = ClientChannel(
   ),
 );
 
-//生成随机的request
-ReportLogByGrpcRequest getMockupReportLogByGrpcRequest() {
-  final logContext = LogContext();
-  //从1970年1月1日到现在的毫秒数(int64)
-  return ReportLogByGrpcRequest()
-    ..id = Uuid().v4()
-    ..type = Random().nextInt(6)
-    ..layer = Random().nextInt(8)
-    ..summary = 'summary'
-    ..detail = 'detail'
-    ..createTime = Int64(DateTime
-        .now()
-        .millisecondsSinceEpoch)
-    ..loggerName = 'loggerName'
-    ..module = 'module'
-    ..logContext = logContext;
+//生成随机的Log
+Log getMockupLog() {
+  final context = Context();
+  final knowLogTypes = LogType.knownLogTypes;
+  final randomLogType = knowLogTypes[Random().nextInt(knowLogTypes.length)];
+
+  final knowLogLayers = LogLayer.knownLogLayers;
+  final randomLogLayer = knowLogLayers[Random().nextInt(knowLogLayers.length)];
+  return Log(
+    type: randomLogType,
+    layer: randomLogLayer,
+    module: 'module',
+    summary: 'summary',
+    detail: 'detail',
+    logContext: context,
+  );
 }
 //main函数
 Future<void> main() async {
@@ -46,7 +47,7 @@ Future<void> main() async {
       print('向grpc服务器报送 $count 条日志, 已经报送 $alreadyReported 条日志');
       for (var i = 0; i < count; i++) {
         final response = await stub.reportLogByGrpc(
-          getMockupReportLogByGrpcRequest(),
+          getMockupLog().toRequest(),
           options: CallOptions(compression: const GzipCodec()),
         );
         // print('已经报送 $alreadyReported 条日志,收到grpc服务器返回: ${response.success}');
