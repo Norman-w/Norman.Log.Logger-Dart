@@ -17,3 +17,6 @@
   3. `export PATH="$PATH:$HOME/.pub-cache/bin"`将protoc_plugin加入到环境变量
   4. 在项目根目录下(可以看到Proto和Sdk文件夹)`protoc --dart_out=grpc:Sdk -I=Proto Proto/*.proto`生成dart文件
   5. 编写并运行test.dart中的代码,测试是否能够连接到服务端
+
+## 注:
+当前仅通过grpc的方式连接到服务端,并没有实现lib库本身,也没有时间缓存,业务模型等功能.WIP
