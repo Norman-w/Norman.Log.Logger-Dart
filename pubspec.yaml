@@ -1,0 +1,10 @@
+name: norman.log.logger.dart
+version: 0.0.1
+description: Norman.Log.Logger的Dart版本
+#限制Dart版本,支持null safety
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+dependencies:
+  grpc: ^4.0.0
+  protobuf: ^3.1.0
+  uuid: ^4.4.2

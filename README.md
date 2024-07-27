@@ -1,0 +1,18 @@
+# Norman.Log.Logger的dart端的实现
+
+实现步骤:
+* 创建Proto文件夹,内部放置从C#(代码优先)生成的proto文件
+* 添加pubspec.yaml文件,添加必要的内容
+  ```yaml
+  name: norman.log.logger.dart
+  version: 0.0.1
+  description: Norman.Log.Logger的Dart版本
+  #限制Dart版本,支持null safety
+  environment:
+    sdk: '>=3.0.0 <4.0.0'
+  ```
+* 通过cli生成dart文件: 
+  1. 项目中添加dart和protobuf包,通过`dart pub add protobuf`和`dart pub add grpc`添加
+  2`dart pub global activate protoc_plugin`安装protoc_plugin
+  3`export PATH="$PATH:$HOME/.pub-cache/bin"`将protoc_plugin加入到环境变量
+  4在项目根目录下(可以看到Proto和Sdk文件夹)`protoc --dart_out=grpc:Sdk -I=Proto Proto/*.proto`生成dart文件
