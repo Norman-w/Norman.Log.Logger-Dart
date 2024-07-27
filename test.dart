@@ -3,7 +3,7 @@ import 'package:grpc/grpc.dart';
 import 'Model/Log.dart';
 import 'Model/LogLayer.dart';
 import 'Model/LogType.dart';
-import 'Sdk/ReportLogService.pbgrpc.dart';
+import 'main.dart';
 //定义grpc通道
 final channel = ClientChannel(
   'localhost',
@@ -34,9 +34,13 @@ Log getMockupLog() {
 }
 //main函数
 Future<void> main() async {
+  print('初始化Logger');
+  final onLoggerError = (Object sender, Object error, Log log) {
+    print('日志报送失败,事件触发者:\r\n $sender, \r\n错误信息:\r\n $error, \r\n报送的日志为:\r\n $log \r\n\r\n');
+  };
+  Logger.init('localhost', 5011, 'test', [onLoggerError]);
+  print('初始化完成,开始报送日志');
   try {
-    //定义grpc客户端
-    final stub = ReportLogServiceClient(channel);
     int alreadyReported = 0;
     //持续循环
     while (true) {
@@ -46,10 +50,8 @@ Future<void> main() async {
       final count = Random().nextInt(20) + 1;
       print('向grpc服务器报送 $count 条日志, 已经报送 $alreadyReported 条日志');
       for (var i = 0; i < count; i++) {
-        final response = await stub.reportLogByGrpc(
-          getMockupLog().toRequest(),
-          options: CallOptions(compression: const GzipCodec()),
-        );
+        final log = getMockupLog();
+        Logger.log(log);
         // print('已经报送 $alreadyReported 条日志,收到grpc服务器返回: ${response.success}');
         alreadyReported++;
       }
