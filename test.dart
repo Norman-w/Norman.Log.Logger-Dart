@@ -24,6 +24,7 @@ Log getMockupLog() {
   final knowLogLayers = LogLayer.knownLogLayers;
   final randomLogLayer = knowLogLayers[Random().nextInt(knowLogLayers.length)];
   return Log(
+    "MOCKUP",
     type: randomLogType,
     layer: randomLogLayer,
     module: 'module',

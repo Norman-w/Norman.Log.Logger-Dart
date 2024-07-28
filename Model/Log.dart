@@ -122,7 +122,7 @@ import 'package:fixnum/fixnum.dart';
 class Log {
   DateTime createTime = DateTime.now();
   String id = Uuid().v4();
-  String loggerName = 'DefaultLogger';
+  final String loggerName;
   LogType type;
   LogLayer layer;
   String module;
@@ -130,7 +130,11 @@ class Log {
   String detail;
   Context logContext;
 
-  Log({
+  /**
+   * 构造函数,初始化时指定loggerName和其他必填项,其中loggerName是必填项且不可更改
+   */
+  Log(this.loggerName,
+      {
     required this.type,
     required this.layer,
     required this.module,

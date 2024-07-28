@@ -71,7 +71,7 @@ class Logger {
     String summary, {
         String? module,Context? logContext, String? detail }
   ) {
-    log(Log(
+    log(Log("DEFAULT",
       type: LogType.Error,
       layer: LogLayer.Business,
       module: module ?? 'Default',
