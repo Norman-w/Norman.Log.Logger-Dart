@@ -39,7 +39,7 @@ Future<void> main() async {
   final onLoggerError = (Object sender, Object error, Log log) {
     print('日志报送失败,事件触发者:\r\n $sender, \r\n错误信息:\r\n $error, \r\n报送的日志为:\r\n $log \r\n\r\n');
   };
-  Logger.init('localhost', 5011, 'test', [onLoggerError]);
+  Logger.init('localhost', 5011, [onLoggerError]);
   print('初始化完成,开始报送日志');
   try {
     int alreadyReported = 0;

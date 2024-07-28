@@ -18,5 +18,16 @@
   4. 在项目根目录下(可以看到Proto和Sdk文件夹)`protoc --dart_out=grpc:Sdk -I=Proto Proto/*.proto`生成dart文件
   5. 编写并运行test.dart中的代码,测试是否能够连接到服务端
 
+
+## 使用
+
+当使用Logger.log()等方法时,使用的是名为Default的默认命名日志记录器
+
+当使用var LoginServiceLogger = Logger('LoginService', stub);时,使用的是名为LoginService的命名日志记录器,stub为grpc客户端
+
+`也可以使用var loginServiceLogger = Logger('LoginService', 'localhost', 5001);`来指定grpc客户端的地址和端口,初始化一个内含grpc客户端的Logger
+
+调用loginServiceLogger.log()等方法时,会将日志发送到grpc服务端
+
 ## 注:
 当前仅通过grpc的方式连接到服务端,并没有实现lib库本身,也没有时间缓存,业务模型等功能.WIP

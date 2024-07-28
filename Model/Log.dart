@@ -166,7 +166,7 @@ class Log {
     return _bytes!;
   }
 
-  ReportLogByGrpcRequest toRequest() {
+  ReportLogByGrpcRequest toReportLogByGrpcRequest() {
     return ReportLogByGrpcRequest()
       ..createTime = Int64(createTime.toUtc().millisecondsSinceEpoch)
       ..id = id
