@@ -3,7 +3,7 @@ import 'package:grpc/grpc.dart';
 import 'Model/Log.dart';
 import 'Model/LogLayer.dart';
 import 'Model/LogType.dart';
-import 'main.dart';
+import 'default.dart';
 //定义grpc通道
 final channel = ClientChannel(
   'localhost',
