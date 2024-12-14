@@ -18,13 +18,10 @@ Logger为静态模式,直接调用即可,无需实例化,但是要完成Logger.i
 
 * */
 
-import 'package:grpc/grpc.dart';
+import 'Model/ErrorHandler.dart';
 import 'Model/Log.dart';
-import 'Sdk/ReportLogService.pbgrpc.dart';
 import 'namedLogger.dart';
 //定义回调格式为带如下参数的委托:
-//发送者,catch到的错误信息,Log,返回值为void
-typedef ErrorHandler = void Function(Object sender, Object error, Log log);
 
 ///获取名字为Default的日志记录器并可调用其方法进行日志记录
 class Logger {
