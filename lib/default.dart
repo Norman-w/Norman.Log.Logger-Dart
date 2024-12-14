@@ -18,9 +18,9 @@ Logger为静态模式,直接调用即可,无需实例化,但是要完成Logger.i
 
 * */
 
-import 'Model/ErrorHandler.dart';
-import 'Model/Log.dart';
-import 'namedLogger.dart';
+import '../Model/ErrorHandler.dart';
+import '../Model/Log.dart';
+import '../namedLogger.dart';
 //定义回调格式为带如下参数的委托:
 
 ///获取名字为Default的日志记录器并可调用其方法进行日志记录

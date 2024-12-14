@@ -1,9 +1,9 @@
 import 'dart:math';
 import 'package:grpc/grpc.dart';
-import 'Model/Log.dart';
-import 'Model/LogLayer.dart';
-import 'Model/LogType.dart';
-import 'default.dart';
+import 'package:norman.log.logger.dart/Model/Log.dart';
+import 'package:norman.log.logger.dart/Model/LogLayer.dart';
+import 'package:norman.log.logger.dart/Model/LogType.dart';
+import 'lib/default.dart';
 //定义grpc通道
 final channel = ClientChannel(
   'localhost',
