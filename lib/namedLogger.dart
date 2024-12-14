@@ -107,5 +107,66 @@ class NamedLogger {
   void removeErrorHandler(ErrorHandler handler) {
     _errorHandlers.remove(handler);
   }
+  //endregion
+
+
+  //region 检测日志报送能力
+  // 用于记录是否已发送请求的状态
+  Future<Map<String, dynamic>>? _canSendLogTask;
+  /// 测试日志是否可以报送, 通过发送测试日志检查网络连接状态
+  /// 返回一个Map，其中包含是否成功的布尔值 `success` 和失败的原因 `error`（如果有）
+  Future<Map<String, dynamic>> canSendLog() async {
+    // 如果已有正在执行的任务，直接返回它
+    if (_canSendLogTask != null) {
+      return _canSendLogTask!;
+    }
+
+    // 创建请求任务
+    _canSendLogTask = _sendTestLog();
+
+    // 确保任务完成后清理状态
+    final result = await _canSendLogTask!;
+    _canSendLogTask = null; // 重置任务
+    return result;
+  }
+
+  /// 实现测试日志的发送
+  Future<Map<String, dynamic>> _sendTestLog() async {
+    try {
+      // 构造一个简单的测试日志
+      final testLog = Log(
+        "DEFAULT",
+        type: LogType.Info,
+        layer: LogLayer.System,
+        module: "Test",
+        summary: "测试日志连接",
+        detail: "这是一个测试日志，用于检查日志报送能力",
+        logContext: Context(),
+      );
+
+      // 尝试发送测试日志并捕获任何可能的异常
+      final response = await reportLogServiceClient
+          .reportLogByGrpc(
+        testLog.toReportLogByGrpcRequest()..loggerName = name,
+        options: CallOptions(compression: const GzipCodec()),
+      )
+          .catchError((error) {
+        // 捕获错误，不中断调试，抛出异常供外部处理
+        throw Exception("内部捕获的异常: ${error.toString()}");
+      });
+
+      // 返回是否成功的结果
+      return {
+        "success": response.success,
+        "error": response.success ? null : "服务器返回失败",
+      };
+    } catch (e) {
+      // 捕获所有异常并返回统一的结果
+      return {
+        "success": false,
+        "error": e.toString(),
+      };
+    }
+  }
 //endregion
 }
